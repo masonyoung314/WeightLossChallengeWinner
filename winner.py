@@ -20,31 +20,43 @@ port = 465
 
 
 def percentChange(startWeight, endWeight):
-    return (abs(startWeight - endWeight) / startWeight)
+    return (abs(startWeight - endWeight) / startWeight) * 100
 
-# def calculateWinner():
-#     # data = pd.read_csv("weightlossdata.csv") Uncomment when we download csv file with data
-#     sofiFinalWeight = data.iat[30, 1]
-#     sofiStartWeight = dta.iat[1, 1]
-#     masonFinalWeight = data.iat[30, 2]
-#     masonStartWeight = data.iat[1, 2]
+def calculateWinner():
+    data = pd.read_csv("weightlossdata.csv") 
+    print(data.head())
+    sofiFinalWeight = data.iloc[29].loc["Sofi's Weight (kg)"] 
+    sofiStartWeight = data.iloc[0].loc["Sofi's Weight (kg)"]
+    masonFinalWeight = data.iloc[29].loc["Mason's Weight (kg)"]
+    masonStartWeight = data.iloc[0].loc["Mason's Weight (kg)"]
 
-#     masonChange = percentChange(masonStartWeight, masonFinalWeight)
-#     sofiChange = percentChange(sofiStartWeight, sofiFinalWeight)
+    masonChange = percentChange(masonStartWeight, masonFinalWeight)
+    sofiChange = percentChange(sofiStartWeight, sofiFinalWeight)
+    print(masonChange)
+    print(sofiChange)
 
-#     if (sofiChange > masonChange):
-#         winner = "Sofía"
-#     elif (masonChange > sofiChange):
-#         winner = "Mason"    
-#     else:
-#         winner = "It was a tie...30 more days of challenge."
+    if (sofiChange > masonChange):
+        winner = "Sofía"
+        winnerPercentChange = sofiChange
+    elif (masonChange > sofiChange):
+        winner = "Mason"    
+        winnerPercentChange = masonChange
+    else:
+        winner = "It was a tie...30 more days of challenge."
+        winnerPercentChange = sofiChange
 
-#     return winner
+    return (winner, winnerPercentChange)
 
-
-# officialWinner = calculateWinner()
-officialWinner = "Mason"
+winnerInfo = calculateWinner()
+officialWinner = winnerInfo[0]
+winnerChange = winnerInfo[1]
 recipients = [myEmail, herEmail]
+
+# formatting if it is a tie/not a tie
+statement = " each."
+noStatement = "."
+
+
 messageBody = f"""
 Dear Sofía and Mason,
 
@@ -79,7 +91,9 @@ al;skdjfa;lksdjfal;skdfja;lsdkfjas;dlkfjasdl;fkjasd;flkjasdf;lkjasdflkjasdf;lkaj
 
 
 
-The winner of Sofía and Mason's 30 Day Weight Loss Challenge is {officialWinner}!!!!!!!!!!!!!!!!!!!!
+The winner of Sofía and Mason's 30 Day Weight Loss Challenge is {officialWinner}!!!!!!!!!!!!!!!!!!!! with %{winnerChange} loss of body weight{statement if winnerInfo == "It was a tie...30 more days of challenge." else noStatement} 
+
+Congratulations!!!!
 """
 
 msg = MIMEText(messageBody, 'plain')
