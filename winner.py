@@ -25,9 +25,9 @@ def percentChange(startWeight, endWeight):
 def calculateWinner():
     data = pd.read_csv("weightlossdata.csv") 
     print(data.head())
-    sofiFinalWeight = data.iloc[29].loc["Sofi's Weight (kg)"] 
+    sofiFinalWeight = data.iloc[27].loc["Sofi's Weight (kg)"] 
     sofiStartWeight = data.iloc[0].loc["Sofi's Weight (kg)"]
-    masonFinalWeight = data.iloc[29].loc["Mason's Weight (kg)"]
+    masonFinalWeight = data.iloc[27].loc["Mason's Weight (kg)"]
     masonStartWeight = data.iloc[0].loc["Mason's Weight (kg)"]
 
     masonChange = percentChange(masonStartWeight, masonFinalWeight)
@@ -96,7 +96,12 @@ The winner of Sofía and Mason's 30 Day Weight Loss Challenge is {officialWinner
 Congratulations!!!!
 """
 
-msg = MIMEText(messageBody, 'plain')
+testmessageBody = f"""
+If we were to end the challenge today, my Pequeñita, the result would be...
+
+{officialWinner}, you are the winner!!! as you lost %{winnerChange} of your bodyweight.
+"""
+msg = MIMEText(testmessageBody, 'plain')
 msg["From"] = myEmail
 msg["To"] = ", ".join(recipients)
 msg["Subject"] = "And the winner is..."
